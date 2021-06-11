@@ -12,6 +12,7 @@ public class PolarityApplication {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 
 		SpringApplication.run(PolarityApplication.class, args);
+
 	}
 
 }
