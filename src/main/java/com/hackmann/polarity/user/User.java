@@ -13,6 +13,9 @@ public class User {
     @Autowired
     private PairingService pairingService;
 
+    @Autowired
+    private PositionService positionService;
+
     private Connection connection;
     private ChatRoom currentChatRoom = null;
     private final HashMap<String, Integer> preferences = new HashMap<>();
@@ -49,6 +52,11 @@ public class User {
     public void joinRoom(ChatRoom chatroom) {
         this.currentChatRoom = chatroom;
         chatroom.join(this);
+    }
+
+    public String getUsername() {
+        int currentPosition = this.getPreference(this.getChatRoom().getTopic());
+        return this.positionService.getPositionText(currentPosition);
     }
 
     public void leaveChatRoom() {

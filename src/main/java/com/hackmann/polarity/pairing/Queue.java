@@ -41,7 +41,7 @@ public class Queue {
                     this.removeUserFromQueue(primaryUser);
                     this.removeUserFromQueue(secondaryUser);
 
-                    ChatRoom newChatRoom = new ChatRoom();
+                    ChatRoom newChatRoom = new ChatRoom(this.topicName);
                     primaryUser.joinRoom(newChatRoom);
                     secondaryUser.joinRoom(newChatRoom);
                 }

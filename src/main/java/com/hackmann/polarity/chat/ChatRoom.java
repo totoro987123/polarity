@@ -10,10 +10,15 @@ import java.util.ArrayList;
 public class ChatRoom {
 
     private ArrayList<User> members = new ArrayList<>();
+    private String topic;
     private boolean open = true;
 
-    public ChatRoom() {
+    public ChatRoom(String topic) {
+        this.topic = topic;
+    }
 
+    public String getTopic() {
+        return this.topic;
     }
 
     public void join(User user) {
