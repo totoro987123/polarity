@@ -1,5 +1,6 @@
 package com.hackmann.polarity;
 
+import com.hackmann.polarity.chat.ChatRoom;
 import com.hackmann.polarity.user.User;
 import com.hackmann.polarity.websocket.Connection;
 import org.springframework.context.annotation.Bean;
@@ -22,4 +23,5 @@ public class Config {
     public User user(Connection connection) {
         return new User(connection);
     }
+
 }
