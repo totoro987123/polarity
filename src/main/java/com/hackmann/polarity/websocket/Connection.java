@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
 
 public class Connection implements Runnable{
@@ -55,27 +56,32 @@ public class Connection implements Runnable{
             running = true;
 
             while(running) {
-                byte[] header = new byte[this.HEADER_SIZE];
-                this.in.read(header);
+                try {
+                    byte[] header = new byte[this.HEADER_SIZE];
+                    this.in.read(header);
 
-                if (header == new byte[this.HEADER_SIZE]) {
-                    continue;
+                    if (header == new byte[this.HEADER_SIZE]) {
+                        continue;
+                    }
+
+                    int length = this.interpreter.getLength(header);
+
+                    if (length == 0) {
+                        continue;
+                    }
+
+                    byte[] data = new byte[length];
+                    this.in.read(data);
+
+                    Event event = this.interpreter.bytesToEvent(data);
+
+                    listener.received(event, this);
+                } catch (SocketException e) {
+                    userService.getUser(this).disconnect();
                 }
 
-                int length = this.interpreter.getLength(header);
-
-                if (length == 0) {
-                    continue;
-                }
-
-                byte[] data = new byte[length];
-                this.in.read(data);
-
-                Event event = this.interpreter.bytesToEvent(data);
-
-                listener.received(event, this);
             }
-        }catch(IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
             userService.getUser(this).disconnect();
         }

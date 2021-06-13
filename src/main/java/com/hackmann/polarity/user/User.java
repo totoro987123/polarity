@@ -60,8 +60,10 @@ public class User {
     }
 
     public void leaveChatRoom() {
-        this.currentChatRoom.shutdown();
-        this.currentChatRoom = null;
+        if (this.currentChatRoom != null) {
+            this.currentChatRoom.shutdown();
+            this.currentChatRoom = null;
+        }
     }
 
     public ChatRoom getChatRoom() {

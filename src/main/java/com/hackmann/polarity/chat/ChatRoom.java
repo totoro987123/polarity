@@ -2,6 +2,7 @@ package com.hackmann.polarity.chat;
 
 import com.hackmann.polarity.events.Event;
 import com.hackmann.polarity.events.clientEvents.JoinedRoomEvent;
+import com.hackmann.polarity.events.clientEvents.RoomClosedEvent;
 import com.hackmann.polarity.user.User;
 import org.apache.logging.log4j.message.Message;
 
@@ -30,8 +31,11 @@ public class ChatRoom {
     }
 
     public void sendMessage(Event content, User sender) {
+        System.out.println(this.members.size());
         for (User user : this.members) {
+            System.out.println("member");
             if (user != sender) {
+                System.out.println("non-sender member! Sent!");
                 user.getConnection().send(content);
             }
         }
@@ -39,7 +43,7 @@ public class ChatRoom {
 
     public void shutdown() {
         for (User user : this.members) {
-            // Send them a kick out notication
+            user.getConnection().send(new RoomClosedEvent());
         }
         this.members.clear();
         this.open = false;
